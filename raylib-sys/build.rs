@@ -67,7 +67,7 @@ fn build_with_cmake(src_path: &str) {
     match platform {
         Platform::Desktop => conf.define("PLATFORM", "Desktop"),
         Platform::Web => conf.define("PLATFORM", "Web"),
-        Platform::RPI => conf.define("PLATFORM", "Raspberry Pi"),
+        Platform::RPI => conf.define("PLATFORM", "DRM"),
     };
 
     let dst = conf.build();
@@ -78,12 +78,14 @@ fn build_with_cmake(src_path: &str) {
             std::fs::copy(
                 dst_lib.join("raylib_static.lib"),
                 dst_lib.join("raylib.lib"),
-            ).expect("filed to create windows library");
+            )
+            .expect("filed to create windows library");
         } else if Path::new(&dst_lib.join("libraylib_static.a")).exists() {
             std::fs::copy(
                 dst_lib.join("libraylib_static.a"),
                 dst_lib.join("libraylib.a"),
-            ).expect("filed to create windows library");
+            )
+            .expect("filed to create windows library");
         } else {
             panic!("filed to create windows library");
         }
