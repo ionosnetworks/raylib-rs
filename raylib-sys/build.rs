@@ -72,7 +72,8 @@ fn build_with_cmake(src_path: &str) {
         Platform::Web => conf.define("PLATFORM", "Web"),
         Platform::RPI => conf
             .define("PLATFORM", "DRM")
-            .cflag("-DDEFAULT_GRAPHIC_DEVICE_DRM=\\\"/dev/dri/by-path/platform-gpu-card\\\""),
+            .cflag("-DDEFAULT_GRAPHIC_DEVICE_DRM=\\\"/dev/dri/by-path/platform-gpu-card\\\"")
+            .define("SUPPORT_SSH_KEYBOARD_RPI", "ON"),
     };
 
     let dst = conf.build();
