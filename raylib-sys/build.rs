@@ -70,7 +70,10 @@ fn build_with_cmake(src_path: &str) {
     match platform {
         Platform::Desktop => conf.define("PLATFORM", "Desktop"),
         Platform::Web => conf.define("PLATFORM", "Web"),
-        Platform::RPI => conf.define("PLATFORM", "DRM"),
+        Platform::RPI => conf.define("PLATFORM", "DRM").define(
+            "DEFAULT_GRAPHIC_DEVICE_DRM",
+            "/dev/dri/by-path/platform-gpu-card",
+        ),
     };
 
     let dst = conf.build();
