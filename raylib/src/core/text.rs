@@ -109,26 +109,26 @@ impl RaylibHandle {
     }
 
     /// Loads font data for further use (see also `Font::from_data`).
-    #[inline]
-    pub fn load_font_data(
+    pub fn load_font_data<T: AsRef<[u8]>>(
         &mut self,
-        filename: &str,
+        data: T,
         font_size: i32,
         chars: Option<&[i32]>,
         sdf: i32,
     ) -> Vec<ffi::CharInfo> {
-        let c_filename = CString::new(filename).unwrap();
+        let data = data.as_ref();
         unsafe {
             let ci_arr_ptr = match chars {
                 Some(c) => ffi::LoadFontData(
-                    c_filename.as_ptr(),
+                    data.as_ptr(),
+                    data.len() as i32,
                     font_size,
                     c.as_ptr() as *mut i32,
                     c.len() as i32,
                     sdf,
                 ),
                 None => {
-                    ffi::LoadFontData(c_filename.as_ptr(), font_size, std::ptr::null_mut(), 0, sdf)
+                    ffi::LoadFontData(data.as_ptr(), data.len() as i32, font_size, std::ptr::null_mut(), 0, sdf)
                 }
             };
             let ci_size = if let Some(c) = chars { c.len() } else { 95 }; // raylib assumes 95 if none given

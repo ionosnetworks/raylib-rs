@@ -64,7 +64,7 @@ pub fn run(mut rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
     let mut color_selected = 0;
     let mut color_selected_prev = color_selected;
     let mut color_mouse_hover = None;
-    let mut brush_size = 20;
+    let mut brush_size = 20.;
 
     let btn_save_rec = rrect(750, 10, 40, 30);
     let mut btn_save_mouse_hover = false;
@@ -119,12 +119,12 @@ pub fn run(mut rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
             }
 
             // Change brush size
-            brush_size += rl.get_mouse_wheel_move() * 5;
-            if brush_size < 2 {
-                brush_size = 2;
+            brush_size += rl.get_mouse_wheel_move() * 5.;
+            if brush_size < 2. {
+                brush_size = 2.;
             }
-            if brush_size > 50 {
-                brush_size = 50;
+            if brush_size > 50. {
+                brush_size = 50.;
             }
 
             if rl.is_key_pressed(KEY_C) {

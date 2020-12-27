@@ -181,14 +181,6 @@ impl RaylibAudio {
         }
     }
 
-    /// Sets music loop count (loop repeats).
-    #[inline]
-    pub fn set_music_loop_count(&mut self, music: &mut Music, count: i32) {
-        unsafe {
-            ffi::SetMusicLoopCount(music.0, count);
-        }
-    }
-
     /// Gets music time length in seconds.
     #[inline]
     pub fn get_music_time_length(&self, music: &Music) -> f32 {
@@ -293,14 +285,14 @@ impl Wave {
 
     /// Export wave file. Extension must be .wav or .raw
     #[inline]
-    pub fn export_wave(&self, filename: &str) {
+    pub fn export_wave(&self, filename: &str) -> bool {
         let c_filename = CString::new(filename).unwrap();
         unsafe { ffi::ExportWave(self.0, c_filename.as_ptr()) }
     }
 
     /// Export wave sample data to code (.h)
     #[inline]
-    pub fn export_wave_as_code(&self, filename: &str) {
+    pub fn export_wave_as_code(&self, filename: &str) -> bool {
         let c_filename = CString::new(filename).unwrap();
         unsafe { ffi::ExportWaveAsCode(self.0, c_filename.as_ptr()) }
     }
@@ -324,20 +316,6 @@ impl Wave {
     pub fn wave_crop(&mut self, init_sample: i32, final_sample: i32) {
         unsafe {
             ffi::WaveCrop(&mut self.0, init_sample, final_sample);
-        }
-    }
-
-    /// Gets sample data from wave as an `f32` array.
-    #[inline]
-    pub fn get_wave_data(&self) -> Vec<f32> {
-        unsafe {
-            let data = ffi::GetWaveData(self.0);
-            let data_size = (self.sampleCount * self.channels) as usize;
-            let mut samples = Vec::with_capacity(data_size);
-            samples.set_len(data_size);
-            std::ptr::copy(data, samples.as_mut_ptr(), data_size);
-            libc::free(data as *mut libc::c_void);
-            samples
         }
     }
 }

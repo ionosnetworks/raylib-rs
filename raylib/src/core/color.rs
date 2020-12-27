@@ -254,8 +254,8 @@ impl Color {
 
     /// Returns a Color from HSV values
     #[inline]
-    pub fn color_from_hsv(hsv: Vector3) -> Color {
-        unsafe { ffi::ColorFromHSV(hsv.into()).into() }
+    pub fn color_from_hsv(hue: f32, saturation: f32, value: f32) -> Color {
+        unsafe { ffi::ColorFromHSV(hue, saturation, value).into() }
     }
 
     /// Returns color from normalized values [0..1]

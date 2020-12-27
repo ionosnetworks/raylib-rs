@@ -400,7 +400,7 @@ fn load_material_pbr(
     let texHDR = rl
         .load_texture(thread, "original/models/resources/dresden_square.hdr")
         .unwrap();
-    let cubemap = rl.gen_texture_cubemap(thread, &shdr_cubemap, &texHDR, CUBEMAP_SIZE);
+    let cubemap = rl.gen_texture_cubemap(thread, &shdr_cubemap, &texHDR, CUBEMAP_SIZE, PixelFormat::UNCOMPRESSED_R8G8B8A8);
     unsafe {
         *mat.maps_mut()[MAP_IRRADIANCE as usize].texture_mut() = rl
             .gen_texture_irradiance(thread, &shdr_irradiance, &cubemap, IRRADIANCE_SIZE)

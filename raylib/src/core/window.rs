@@ -277,22 +277,6 @@ impl RaylibHandle {
         }
     }
 
-    /// Show the window.
-    #[inline]
-    pub fn unhide_window(&mut self) {
-        unsafe {
-            ffi::UnhideWindow();
-        }
-    }
-
-    /// Hide the window.
-    #[inline]
-    pub fn hide_window(&mut self) {
-        unsafe {
-            ffi::HideWindow();
-        }
-    }
-
     /// Sets icon for window (only on desktop platforms).
     #[inline]
     pub fn set_window_icon(&mut self, image: impl AsRef<ffi::Image>) {
