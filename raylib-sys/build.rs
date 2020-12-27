@@ -46,20 +46,23 @@ fn build_with_cmake(src_path: &str) {
 
     let mut conf = cmake::Config::new(src_path);
     let builder;
+    let build_type;
     #[cfg(debug_assertions)]
     {
         builder = conf.profile("Debug");
+        build_type = "Debug"
     }
 
     #[cfg(not(debug_assertions))]
     {
         builder = conf.profile("Release");
+        build_type = "Release"
     }
 
     builder
         .define("BUILD_EXAMPLES", "OFF")
         .define("BUILD_GAMES", "OFF")
-        .define("CMAKE_BUILD_TYPE", "Release")
+        .define("CMAKE_BUILD_TYPE", build_type)
         // turn off until this is fixed
         .define("SUPPORT_BUSY_WAIT_LOOP", "OFF")
         .define("STATIC", "TRUE");
