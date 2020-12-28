@@ -44,6 +44,12 @@ fn build_with_cmake(src_path: &str) {
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
     let (platform, platform_os) = platform_from_target(&target);
 
+    fs::write(
+        Path::new(src_path).join("src/rlgl.h"),
+        include_str!("rlgl.h"),
+    )
+    .expect("failed to write bindings");
+
     let mut conf = cmake::Config::new(src_path);
     let builder;
     let build_type;

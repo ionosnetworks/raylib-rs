@@ -4152,14 +4152,14 @@ static Shader LoadShaderDefault(void)
 #if defined(GRAPHICS_API_OPENGL_21)
     "#version 120                       \n"
 #elif defined(GRAPHICS_API_OPENGL_ES2)
-    "#version 100                       \n"
+    "#version 300 es                    \n"
 #endif
 #if defined(GRAPHICS_API_OPENGL_ES2) || defined(GRAPHICS_API_OPENGL_21)
-    "attribute vec3 vertexPosition;     \n"
-    "attribute vec2 vertexTexCoord;     \n"
-    "attribute vec4 vertexColor;        \n"
-    "varying vec2 fragTexCoord;         \n"
-    "varying vec4 fragColor;            \n"
+    "in vec3 vertexPosition;     \n"
+    "in vec2 vertexTexCoord;     \n"
+    "in vec4 vertexColor;        \n"
+    "out vec2 fragTexCoord;         \n"
+    "out vec4 fragColor;            \n"
 #elif defined(GRAPHICS_API_OPENGL_33)
     "#version 330                       \n"
     "in vec3 vertexPosition;            \n"
@@ -4181,12 +4181,13 @@ static Shader LoadShaderDefault(void)
 #if defined(GRAPHICS_API_OPENGL_21)
     "#version 120                       \n"
 #elif defined(GRAPHICS_API_OPENGL_ES2)
-    "#version 100                       \n"
+    "#version 300 es                    \n"
     "precision mediump float;           \n"     // precision required for OpenGL ES2 (WebGL)
 #endif
 #if defined(GRAPHICS_API_OPENGL_ES2) || defined(GRAPHICS_API_OPENGL_21)
-    "varying vec2 fragTexCoord;         \n"
-    "varying vec4 fragColor;            \n"
+    "in vec2 fragTexCoord;         \n"
+    "in vec4 fragColor;            \n"
+    "out vec4 finalColor;          \n"
 #elif defined(GRAPHICS_API_OPENGL_33)
     "#version 330       \n"
     "in vec2 fragTexCoord;              \n"
@@ -4198,8 +4199,8 @@ static Shader LoadShaderDefault(void)
     "void main()                        \n"
     "{                                  \n"
 #if defined(GRAPHICS_API_OPENGL_ES2) || defined(GRAPHICS_API_OPENGL_21)
-    "    vec4 texelColor = texture2D(texture0, fragTexCoord); \n" // NOTE: texture2D() is deprecated on OpenGL 3.3 and ES 3.0
-    "    gl_FragColor = texelColor*colDiffuse*fragColor;      \n"
+    "    vec4 texelColor = texture(texture0, fragTexCoord); \n" // NOTE: texture2D() is deprecated on OpenGL 3.3 and ES 3.0
+    "    finalColor = texelColor*colDiffuse*fragColor;      \n"
 #elif defined(GRAPHICS_API_OPENGL_33)
     "    vec4 texelColor = texture(texture0, fragTexCoord);   \n"
     "    finalColor = texelColor*colDiffuse*fragColor;        \n"
