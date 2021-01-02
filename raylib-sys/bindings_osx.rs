@@ -4323,6 +4323,18 @@ extern "C" {
     pub fn GetScreenHeight() -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn GetWindowEGLDisplay() -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn GetWindowEGLSurface() -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn GetWindowEGLContext() -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn GetWindowEGLConfig() -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
     pub fn GetMonitorCount() -> ::std::os::raw::c_int;
 }
 extern "C" {
