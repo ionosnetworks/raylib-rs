@@ -7950,11 +7950,6 @@ extern "C" {
 extern "C" {
     pub fn __fmal(__x: u128, __y: u128, __z: u128) -> u128;
 }
-pub const FP_NAN: _bindgen_ty_1 = _bindgen_ty_1::FP_NAN;
-pub const FP_INFINITE: _bindgen_ty_1 = _bindgen_ty_1::FP_INFINITE;
-pub const FP_ZERO: _bindgen_ty_1 = _bindgen_ty_1::FP_ZERO;
-pub const FP_SUBNORMAL: _bindgen_ty_1 = _bindgen_ty_1::FP_SUBNORMAL;
-pub const FP_NORMAL: _bindgen_ty_1 = _bindgen_ty_1::FP_NORMAL;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum _bindgen_ty_1 {
