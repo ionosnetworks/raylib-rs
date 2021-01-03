@@ -20,3 +20,5 @@ cc = "1.0"
 default = []
 # Build Raylib headless for docs. Up to you to link
 nobuild = []
+support_busy_wait_loop = []
+support_high_dpi = []

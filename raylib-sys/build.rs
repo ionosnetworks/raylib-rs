@@ -69,8 +69,6 @@ fn build_with_cmake(src_path: &str) {
         .define("BUILD_EXAMPLES", "OFF")
         .define("BUILD_GAMES", "OFF")
         .define("CMAKE_BUILD_TYPE", build_type)
-        // turn off until this is fixed
-        .define("SUPPORT_BUSY_WAIT_LOOP", "OFF")
         .define("STATIC", "TRUE");
 
     match platform {
@@ -81,6 +79,16 @@ fn build_with_cmake(src_path: &str) {
             .cflag("-DDEFAULT_GRAPHIC_DEVICE_DRM=\\\"/dev/dri/by-path/platform-gpu-card\\\"")
             .define("SUPPORT_SSH_KEYBOARD_RPI", "ON"),
     };
+
+    if cfg!(feature = "support_busy_wait_loop") {
+        conf.define("SUPPORT_BUSY_WAIT_LOOP", "ON");
+    } else {
+        conf.define("SUPPORT_BUSY_WAIT_LOOP", "OFF");
+    }
+
+    if cfg!(feature = "support_high_dpi") {
+        conf.define("SUPPORT_HIGH_DPI", "ON");
+    }
 
     let dst = conf.build();
     let dst_lib = join_cmake_lib_directory(dst);
