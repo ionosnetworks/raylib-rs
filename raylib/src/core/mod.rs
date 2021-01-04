@@ -24,6 +24,22 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 use std::sync::atomic::{AtomicBool, Ordering};
 
+#[derive(Clone, Copy, Debug)]
+pub enum Error {
+    AlreadyInitialized,
+    WindowFailed
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Error::AlreadyInitialized => write!(f, "Attempted to initialize raylib-rs more than once!"),
+            Error::WindowFailed => write!(f, "The window failed to open.")
+        }
+    }
+}
+
+
 // shamelessly stolen from imgui
 #[macro_export]
 macro_rules! rstr {
@@ -161,7 +177,7 @@ impl RaylibBuilder {
     /// # Panics
     ///
     /// Attempting to initialize Raylib more than once will result in a panic.
-    pub fn build(&self) -> (RaylibHandle, RaylibThread) {
+    pub fn build(&self) -> Result<(RaylibHandle, RaylibThread), Error> {
         use crate::consts::ConfigFlag::*;
         let mut flags = 0u32;
         if self.fullscreen_mode {
@@ -186,8 +202,8 @@ impl RaylibBuilder {
         unsafe {
             ffi::SetConfigFlags(flags as u32);
         }
-        let rl = init_window(self.width, self.height, &self.title);
-        (rl, RaylibThread(PhantomData))
+        let rl = init_window(self.width, self.height, &self.title)?;
+        Ok((rl, RaylibThread(PhantomData)))
     }
 }
 
@@ -196,18 +212,18 @@ impl RaylibBuilder {
 /// # Panics
 ///
 /// Attempting to initialize Raylib more than once will result in a panic.
-fn init_window(width: i32, height: i32, title: &str) -> RaylibHandle {
+fn init_window(width: i32, height: i32, title: &str) -> Result<RaylibHandle, Error> {
     if IS_INITIALIZED.load(Ordering::Relaxed) {
-        panic!("Attempted to initialize raylib-rs more than once!");
+        return Err(Error::AlreadyInitialized);
     } else {
         unsafe {
             let c_title = CString::new(title).unwrap();
             ffi::InitWindow(width, height, c_title.as_ptr());
         }
         if !unsafe { ffi::IsWindowReady() } {
-            panic!("Attempting to create window failed!");
+            return Err(Error::WindowFailed);
         }
         IS_INITIALIZED.store(true, Ordering::Relaxed);
-        RaylibHandle(())
+        Ok(RaylibHandle(()))
     }
 }
