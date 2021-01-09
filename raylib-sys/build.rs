@@ -75,7 +75,7 @@ fn build_with_cmake(src_path: &str) {
         Platform::Desktop => conf.define("PLATFORM", "Desktop"),
         Platform::Web => conf.define("PLATFORM", "Web"),
         Platform::RPI => conf
-            .define("EGL_NO_X11", "ON")
+            .define("MESA_EGL_NO_X11_HEADERS", "ON")
             .define("PLATFORM", "DRM")
             .cflag("-DDEFAULT_GRAPHIC_DEVICE_DRM=\\\"/dev/dri/by-path/platform-gpu-card\\\"")
             .define("SUPPORT_SSH_KEYBOARD_RPI", "ON"),
