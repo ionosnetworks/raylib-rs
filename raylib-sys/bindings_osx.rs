@@ -7453,6 +7453,9 @@ extern "C" {
     pub fn rlLoadExtensions(loader: *mut ::std::os::raw::c_void);
 }
 extern "C" {
+    pub fn rlCurrentMatrix() -> *mut Matrix;
+}
+extern "C" {
     pub fn rlLoadTexture(
         data: *mut ::std::os::raw::c_void,
         width: ::std::os::raw::c_int,
@@ -23743,7 +23746,6 @@ fn bindgen_test_layout_rlglData() {
     );
 }
 extern "C" {
-    #[no_mangle]
     pub static mut RLGL: rlglData;
 }
 #[repr(C)]

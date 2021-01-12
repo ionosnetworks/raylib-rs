@@ -545,6 +545,7 @@ RLAPI bool rlCheckBufferLimit(int vCount);            // Check internal buffer o
 RLAPI void rlSetDebugMarker(const char *text);        // Set debug marker for analysis
 RLAPI void rlSetBlendMode(int glSrcFactor, int glDstFactor, int glEquation);    // // Set blending mode factor and equation (using OpenGL factors)
 RLAPI void rlLoadExtensions(void *loader);            // Load OpenGL extensions
+RLAPI Matrix *rlCurrentMatrix(void);
 
 // Textures data management
 RLAPI unsigned int rlLoadTexture(void *data, int width, int height, int format, int mipmapCount); // Load texture in GPU
@@ -1953,6 +1954,10 @@ void rlLoadExtensions(void *loader)
     // With GLAD, we can check if an extension is supported using the GLAD_GL_xxx booleans
     //if (GLAD_GL_ARB_vertex_array_object) // Use GL_ARB_vertex_array_object
 #endif
+}
+
+Matrix *rlCurrentMatrix(void) {
+    return RLGL.State.currentMatrix;
 }
 
 // Convert image data to OpenGL texture (returns OpenGL valid Id)
