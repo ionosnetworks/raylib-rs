@@ -23743,6 +23743,7 @@ fn bindgen_test_layout_rlglData() {
     );
 }
 extern "C" {
+    #[no_mangle]
     pub static mut RLGL: rlglData;
 }
 #[repr(C)]
