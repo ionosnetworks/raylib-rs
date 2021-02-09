@@ -72,7 +72,13 @@ fn build_with_cmake(src_path: &str) {
         .define("STATIC", "TRUE");
 
     match platform {
-        Platform::Desktop => conf.define("PLATFORM", "Desktop"),
+        Platform::Desktop => if cfg!(feature = "platform_drm") {
+            conf
+                .define("PLATFORM", "DRM")
+                .cflag("-DMESA_EGL_NO_X11_HEADERS")
+        } else {
+            conf.define("PLATFORM", "Desktop")
+        },
         Platform::Web => conf.define("PLATFORM", "Web"),
         Platform::RPI => conf
             .define("PLATFORM", "DRM")
