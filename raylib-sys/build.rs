@@ -76,6 +76,7 @@ fn build_with_cmake(src_path: &str) {
             conf
                 .define("PLATFORM", "DRM")
                 .cflag("-DMESA_EGL_NO_X11_HEADERS")
+                .define("SUPPORT_SSH_KEYBOARD_RPI", "ON")
         } else {
             conf.define("PLATFORM", "Desktop")
         },
