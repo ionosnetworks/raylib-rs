@@ -22,6 +22,7 @@ nobuild = ["raylib-sys/nobuild"]
 support_busy_wait_loop = ["raylib-sys/support_busy_wait_loop"]
 support_high_dpi = ["raylib-sys/support_high_dpi"]
 platform_drm = ["raylib-sys/platform_drm"]
+ssh_keyboard_rpi = ["raylib-sys/ssh_keyboard_rpi"]
 
 [package.metadata.docs.rs]
 features = [ "nobuild" ]

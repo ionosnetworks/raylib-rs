@@ -76,7 +76,6 @@ fn build_with_cmake(src_path: &str) {
             conf
                 .define("PLATFORM", "DRM")
                 .cflag("-DMESA_EGL_NO_X11_HEADERS")
-                .define("SUPPORT_SSH_KEYBOARD_RPI", "ON")
         } else {
             conf.define("PLATFORM", "Desktop")
         },
@@ -84,9 +83,14 @@ fn build_with_cmake(src_path: &str) {
         Platform::RPI => conf
             .define("PLATFORM", "DRM")
             .cflag("-DMESA_EGL_NO_X11_HEADERS")
-            .cflag("-DDEFAULT_GRAPHIC_DEVICE_DRM=\\\"/dev/dri/by-path/platform-gpu-card\\\"")
-            .define("SUPPORT_SSH_KEYBOARD_RPI", "ON"),
+            .cflag("-DDEFAULT_GRAPHIC_DEVICE_DRM=\\\"/dev/dri/by-path/platform-gpu-card\\\""),
     };
+
+    if cfg!(feature = "ssh_keyboard_rpi") {
+        conf.define("SUPPORT_SSH_KEYBOARD_RPI", "ON");
+    } else {
+        conf.define("SUPPORT_SSH_KEYBOARD_RPI", "OFF");
+    }
 
     if cfg!(feature = "support_busy_wait_loop") {
         conf.define("SUPPORT_BUSY_WAIT_LOOP", "ON");
