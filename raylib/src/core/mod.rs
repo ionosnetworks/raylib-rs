@@ -98,6 +98,7 @@ pub struct RaylibBuilder {
     width: i32,
     height: i32,
     title: String,
+    drm_device: Option<String>,
 }
 
 /// Creates a `RaylibBuilder` for choosing window options before initialization.
@@ -172,6 +173,12 @@ impl RaylibBuilder {
         self
     }
 
+    /// Sets the window title.
+    pub fn drm_device(&mut self, device: &str) -> &mut Self {
+        self.drm_device = Some(device.to_string());
+        self
+    }
+
     /// Builds and initializes a Raylib window.
     ///
     /// # Panics
@@ -202,7 +209,7 @@ impl RaylibBuilder {
         unsafe {
             ffi::SetConfigFlags(flags as u32);
         }
-        let rl = init_window(self.width, self.height, &self.title)?;
+        let rl = init_window(self.width, self.height, &self.title, self.drm_device.as_deref())?;
         Ok((rl, RaylibThread(PhantomData)))
     }
 }
@@ -212,13 +219,21 @@ impl RaylibBuilder {
 /// # Panics
 ///
 /// Attempting to initialize Raylib more than once will result in a panic.
-fn init_window(width: i32, height: i32, title: &str) -> Result<RaylibHandle, Error> {
+fn init_window(width: i32, height: i32, title: &str, drm_device: Option<&str>) -> Result<RaylibHandle, Error> {
     if IS_INITIALIZED.load(Ordering::Relaxed) {
         return Err(Error::AlreadyInitialized);
     } else {
         unsafe {
+            let c_device;
             let c_title = CString::new(title).unwrap();
-            ffi::InitWindow(width, height, c_title.as_ptr());
+            let c_device = match drm_device {
+                Some(device) => {
+                    c_device = CString::new(device).unwrap();
+                    c_device.as_ptr()
+                },
+                None => std::ptr::null(),
+            };
+            ffi::InitWindow(width, height, c_title.as_ptr(), c_device);
         }
         if !unsafe { ffi::IsWindowReady() } {
             return Err(Error::WindowFailed);

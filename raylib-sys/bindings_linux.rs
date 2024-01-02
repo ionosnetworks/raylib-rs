@@ -4574,6 +4574,7 @@ extern "C" {
         width: ::std::os::raw::c_int,
         height: ::std::os::raw::c_int,
         title: *const ::std::os::raw::c_char,
+        drm_device: *const ::std::os::raw::c_char,
     );
 }
 extern "C" {
